@@ -5,15 +5,15 @@
 using namespace std;
 
 //constants set to emulate Arduino pin parameters
-#define HIGH 1
-#define LOW 0
+constexpr MCP23017::Level HIGH = MCP23017::HIGH;
+constexpr MCP23017::Level LOW = MCP23017::LOW;
 
-#define INPUT 1
-#define OUTPUT 0
+constexpr MCP23017::Direction INPUT = MCP23017::INPUT;
+constexpr MCP23017::Direction OUTPUT = MCP23017::OUTPUT;
 
-#define CHANGE 0
-#define FALLING 1
-#define RISING 2
+constexpr MCP23017::InterruptMode CHANGE = MCP23017::CHANGE;
+constexpr MCP23017::InterruptMode FALLING = MCP23017::FALLING;
+constexpr MCP23017::InterruptMode RISING = MCP23017::RISING;
 
 // Basic pin reading and pullup test for the MCP23017 I/O expander
 // public domain!
@@ -30,9 +30,13 @@ using namespace std;
 
 int main() {
 
-  MCP23017 mcp(8, 0x20);      // use default address 0x20
+  MCP23017 mcp(8, MCP23017::DEFAULT_ADDRESS);      // use default address 0x20
 
-  cout << mcp.openI2C() << "\n";
+  if(!mcp.openI2C())
+  {
+    cerr << "Error opening device\n";
+    return 1;
+  }
 
 
   mcp.pinMode(0, INPUT);
